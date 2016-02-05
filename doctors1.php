@@ -10,7 +10,7 @@
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
 *****************************************************************/
 session_start();
-redirect("notavail.php")
+redirect("notavail.php");
 exit(0);
 
 $logFileName = "user";

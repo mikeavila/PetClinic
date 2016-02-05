@@ -35,7 +35,7 @@ if ($result == FALSE)
 $row_cnt = $result->num_rows;
 if ($row_cnt == 0) {
 	//setcookie("errormessage", "You are not listed. Internal error.", $expire1hr);
-     put_errormsg(""You are not listed. Internal error.");
+     put_errormsg("You are not listed. Internal error.");
      redirect("listings.php");      
 	exit();
 }
