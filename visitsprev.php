@@ -47,7 +47,7 @@ for ($i = 0; $i < $row_cnt; $i++) {
 	}
 	$rowcp_cnt = $resultcp->num_rows;
 	if ($rowcp_cnt == 0) {
-          put_errormsg("Internal Error (clientpet)";
+          put_errormsg("Internal Error (clientpet)");
 		//setcookie("errormessage", "Internal Error (clientpet)", $expire10hr);
           redirect("visits.php");           
 		exit();
@@ -57,7 +57,7 @@ for ($i = 0; $i < $row_cnt; $i++) {
 	$resultc = $mysqli->query($sqlc);
 	if ($resultc == FALSE)
 	{
-          put_errormsg("Internal Error (clientpet)";
+          put_errormsg("Internal Error (clientpet)");
 		//setcookie("errormessage", "Internal Error (client)", $expire10hr); 
           redirect("visits.php"); 
 		exit();
@@ -81,7 +81,7 @@ for ($i = 0; $i < $row_cnt; $i++) {
 	$resultp = $mysqli->query($sqlp);
 	if ($resultp == FALSE)
 	{
-          put_errormsg("Internal Error (pet)";
+          put_errormsg("Internal Error (pet)");
 		//setcookie("errormessage", "Internal Error (pet)", $expire10hr);
 		exit();
 	}
@@ -93,7 +93,7 @@ for ($i = 0; $i < $row_cnt; $i++) {
 		$resultv = $mysqli->query($sqlv);
 		if ($resultv == FALSE)
 		{
-               put_errormsg("Internal Error (visit)";
+               put_errormsg("Internal Error (visit)");
 			//setcookie("errormessage", "Internal Error (visit)", $expire10hr);
                redirect("visits.php");                
 			exit();

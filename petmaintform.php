@@ -9,15 +9,19 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of *
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
 *****************************************************************/
-session_start();
 $logFileName = "user";
 $headerTitle="USER LOG";
 require_once "includes/common.inc";
 $mysqli = new mysqli('localhost', $user, $password, '');
 ?>
-<form id="petform" name="petform">
+<form id="petform" name="petform" action="petmaintupd.php" method="post">
 <table cellpadding="5" cellspacing="5" width="90%">
-<tr><td align="right">Pet Number</td><td><input type="text" name="editpetnum" size="4" maxlength="4" READONLY value="<?php echo $editpetnum; ?>"></td>
+<tr>
+     <td class="label">Pet Number</td>
+     <td>
+     	<input type="text" name="editpetnum" size="4" maxlength="4" READONLY value="<?php echo $editpetnum; ?>">
+     </td>
+     <td>&nbsp;</td>
      <td class="label">
          <label for="petname">
              Pet Name 
@@ -26,8 +30,8 @@ $mysqli = new mysqli('localhost', $user, $password, '');
      <td class="field">
          <input id="petname" name="petname" type="text" size="15" maxlength="15" value="<?php echo $petname;?>"> 
      </td>
-     <td class="status">
-     </td>
+     <td class="status"></td>
+     <td colspan="3">&nbsp;</td>
 </tr>
 <tr>
      <td class="label">
@@ -38,8 +42,7 @@ $mysqli = new mysqli('localhost', $user, $password, '');
      <td class="field">
          <input id="dobm" name="dobm" type="text" size="2" maxlength="2" value="<?php echo $dobm;?>"> 
      </td>
-     <td class="status">
-     </td>
+     <td class="status"></td>
      <td class="label">
          <label for="dobd">
              Date of Birth Day
@@ -48,18 +51,17 @@ $mysqli = new mysqli('localhost', $user, $password, '');
      <td class="field">
          <input id="dobd" name="dobd" type="text" size="2" maxlength="2" value="<?php echo $dobd;?>"> 
      </td>
-     <td class="status">
-     </td>
+     <td class="status"></td>
      <td class="label">
          <label for="dobm">
              Date of Birth Year
          </label>
      </td>
      <td class="field">
-         <input id="doby" name="doby" type="text" size="2" maxlength="2" value="<?php echo $doby;?>"> 
+         <input id="doby" name="doby" type="text" size="4" maxlength="4" value="<?php echo $doby;?>"> 
      </td>
-     <td class="status">
-     </td>
+     <td class="status"></td>
+</tr>
 <?php
 if (!is_numeric($editpetnum)) {
 	$speciescd = $_COOKIE["speciescd"];
@@ -82,8 +84,7 @@ if (!is_numeric($editpetnum)) {
 		exit();
 	}
 	$speciesname = "";
-	for ($i = 0; $i < $row_cnt; $i++) {
-		$row = $result->fetch_row();
+	while ( $row = $result->fetch_row() ) {
 		if ($petspecies == $row[0]) {
 			$speciesname = $row[1];
 			$speciescode = $petspecies;
@@ -92,9 +93,15 @@ if (!is_numeric($editpetnum)) {
 	}
 }
 ?>
-<td align="right">Species</td><td><input type="text" name="petspecies" size="20" maxlength="20" READONLY value="<?php echo $speciesname;?>">
-<input type="hidden" name="petspecies" value="<?php echo $speciescode;?>"></td><td align="right"> Breed 
-<SELECT name="petbreed" size="3">
+<tr>
+	<td class="label">Species</td>
+	<td>
+		<input type="text" name="petspecies" size="20" maxlength="20" READONLY value="<?php echo $speciesname;?>">
+		<input type="hidden" name="petspecies" value="<?php echo $speciescode;?>"></td>
+	<td>&nbsp;</td>
+	<td class="label">Breed</td>
+	<td> 
+		<SELECT name="petbreed">
 <?php
 $sql = "SELECT * FROM `petclinic`.`code_breed` WHERE `breedcode` LIKE \"".$speciescode."%\" ORDER BY `breeddesc`;";
 	$result = $mysqli->query($sql);
@@ -115,35 +122,81 @@ $sql = "SELECT * FROM `petclinic`.`code_breed` WHERE `breedcode` LIKE \"".$speci
 	for ($i = 0; $i < $row_cnt; $i++) {
 		$row = $result->fetch_row();
 		$petbreed = substr($row[0], 1, 2);
-		echo "<option value=\"".$petbreed."\"";
+		echo '<option value="' . $petbreed . '"';
 		if ($petbreed1 <> "") {
 			if ($petbreed == $petbreed1) {
-				echo " SELECTED ";
+				echo ' SELECTED ';
 			}
 		}
-		echo ">".$row[1]."</option>";
+		echo '>' . $row[1] . '</option>';
 	}
 ?>
-</select></td><td> Gender <select name="petgender" size="2">
+		</select>
+	</td>
+	<td>&nbsp;</td>
+	<td class="label">Gender</td>
+	<td>
+		<select name="petgender">
 <?php
 	echo '<option value="M"' . ($petgender == "M" ? ' selected' : '') . '>Male</option>';
 	echo '<option value="F"' . ($petgender == "F" ? ' selected' : '') . '>Female</option>';
-     echo '</select></td>';
-     echo '<td align="right"> Fixed <select name="petfixed" size="2">';
+     echo '</select></td></tr>';
+     echo '<tr><td class="label">Fixed</td><td><select name="petfixed">';
      echo '<option value="Y"' . ($petfixed == "Y" ? ' selected' : '') . '>Yes</option>';
      echo '<option value="N"' . ($petfixed == "N" ? ' selected' : '') . '>No</option>';
 ?>
-</select></td></tr>
-<tr><td align="right"> Description <input name="petdesc" type="text" size="50" maxlength="50" value= "<?php echo $petdesc; ?>">
-</td><td align="right"> Color </td><td><input name="petcolor" type="text" size="20" maxlength="20" value= "<?php echo $petcolor;?>"></td></tr>
-<tr><td align="right">License <input name="license" type="text" size="15" maxlength="15" value= "<?php echo $license; ?>">
-<td align="right"> Microchip <input name="microchip" type="text" size="18" maxlength="18" value= "<?php echo $microchip; ?>">
-</td><td> RabiesTag <input name="rabiestag" type="text" size="10" maxlength="10" value= "<?php echo $rabiestag; ?>">
-</td><td> Tattoo Number <input name="tattoonumber" type="text" size="10" maxlength="10" value= "<?php echo $tattoonumber; ?>">
-<td><td> Picture <input name="picture" type="text" size="1" maxlength="1" value= "<?php echo $picture; ?>">
-</td><td> Status <input type="text" name="status" size="1" maxlength="1" value="<?php echo $status; ?>"></td></tr>
+		</select>
+	</td>
+	<td>&nbsp;</td>
+	<td class="label">Description</td>
+	<td colspan="4">
+		<input name="petdesc" type="text" size="50" maxlength="50" value= "<?php echo $petdesc; ?>">
+	</td>
+	<td class="status"></td>
+</tr>
+<tr>
+	<td class="label">Color</td>
+	<td>
+		<input name="petcolor" type="text" size="20" maxlength="20" value= "<?php echo $petcolor;?>">
+	</td>
+	<td>&nbsp;</td>
+	<td class="label">License</td>
+	<td>
+		<input name="license" type="text" size="15" maxlength="15" value= "<?php echo $license; ?>">
+	</td>
+	<td>&nbsp;</td>
+	<td class="label">Microchip</td>
+	<td>
+		<input name="microchip" type="text" size="18" maxlength="18" value= "<?php echo $microchip; ?>">
+	</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td class="label">RabiesTag</td>
+	<td>
+		<input name="rabiestag" type="text" size="10" maxlength="10" value= "<?php echo $rabiestag; ?>">
+	</td>
+	<td>&nbsp;</td>
+	<td class="label">Tattoo Number</td>
+	<td>
+		<input name="tattoonumber" type="text" size="10" maxlength="10" value= "<?php echo $tattoonumber; ?>">
+	</td>
+	<td>&nbsp;</td>
+	<td class="label">Picture</td>
+	<td>
+		<input name="picture" type="text" size="1" maxlength="1" value= "<?php echo $picture; ?>">
+	</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td class="label">Status</td>
+	<td>
+		<input type="text" name="status" size="1" maxlength="1" value="<?php echo $status; ?>">
+	</td>
+	<td>&nbsp;</td>
+</tr>
 <?php
-$sqlclient="SELECT * FROM `clientpet` WHERE `petnumber` = \"".$editpetnum."\";";
+$sqlclient="SELECT * FROM `petclinic`.`clientpet` WHERE `petnumber` = \"".$editpetnum."\";";
 $resultpc = $mysqli->query($sqlclient);
 $clientpc = array_fill(0, 10, "");
 if ($resultpc <> FALSE)
@@ -160,26 +213,24 @@ if ($resultpc <> FALSE)
 } else {
 	$clientpc[0] = "";
 }
-?>		
-<tr><td><center><a href="petmaintc.php" target="_blank"> Click Here </a> to get a list of Clients</td></tr>
-<tr><td>This pet belongs to the this/these client/clients; enter the client number(s) <input type="text" name="client1" size="5" maxlength="5" value="<?php echo $clientpc[0]; ?>">
- <input type="text" name="client2" size="5" maxlength="5" value="<?php echo $clientpc[1]; ?>"></td></tr>
+
+$mysqli->close();
+?>
+<tr>
+	<td class="center" colspan="3"><a href="petmaintc.php" target="_blank"> Click Here </a> to get a list of Clients</td>
+	<td class="center" colspan="3">This pet belongs to the this/these client/clients; enter the client number(s)&nbsp;
+		<input type="text" name="client1" size="5" maxlength="5" value="<?php echo $clientpc[0]; ?>">
+ 		<input type="text" name="client2" size="5" maxlength="5" value="<?php echo $clientpc[1]; ?>">
+ 	</td>
 <?php
 if (is_numeric($editpetnum)) {
-	echo "<tr><td>Do you want to upload a picture of the pet? <SELECT name=\"petpic\" size=\"2\">";
-     echo "<option value=\"N\" SELECTED>No</option><option value=\"Y\">Yes</option></select></td></tr>";
-     echo "<input type=\"hidden\" name=\"petid\" value=\"".$editpetnum."\">";
+	echo '<td class="center" colspan="3">Do you want to upload a pet picture? <select name="petpic">';
+    echo '<option value="N" selected>No</option><option value="Y">Yes</option></select>';
+    echo '<input type="hidden" name="petid" value="' . $editpetnum . '"></td>';
 }
-echo "</table>";
-echo "<center><input type=\"submit\" value=\"Create/Update Pet\"></form>";
-echo "<center><form action=\"maintmenu.php\"><input type=\"submit\" value=\"Return to Maint Menu\"></form><center>";
-$errormsg = get_errormsg();
-if ($errormsg <> " ")
-{
-	echo "<center><font size=\"+2\" color=\"red\">";
-	echo $errormsg;
-	echo "</font></center>";
-}
-delete_errormsg();
-$mysqli->close();
+echo '</tr></table><br>';
+echo '<div class="center"><input type="submit" value="Create/Update Pet"></div></form><br>';
+echo '<div class="center"><form action="maintmenu.php"><input type="submit" value="Return to Maint Menu"></form></div><br>';
+
+require_once 'includes/display_errormsg.inc';
 ?>

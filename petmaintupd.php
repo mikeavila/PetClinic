@@ -127,6 +127,7 @@ if (!empty($_POST["client2"]))
 } else {
 	$client2 = "";
 }
+
 if ($petname == "") {
 	//setcookie("errormessage", "Pet Name cannot be blank", $expire1hr);
      put_errormsg("Pet Name cannot be blank");
@@ -135,7 +136,7 @@ if ($petname == "") {
 }
 if ($dobm == "") {
 	//setcookie("errormessage", "Pet Date of Birg Month cannot be blank", $expire1hr);
-     put_errormsg("Pet Date of Birg Month cannot be blank");
+     put_errormsg("Pet Date of Birth Month cannot be blank");
      redirect("petmaint.php");
 	exit();
 }
