@@ -138,6 +138,11 @@ $headerTitle="USER LOG";
 require_once "includes/common.inc";
 $emplnumber = '';
 $editclientnum = 'new';
+
+if( !empty($_GET['searchEditClient']) ) {
+	$editclientnum = $_GET['searchEditClient'];
+}
+
 $errormsg = get_errormsg();
 delete_errormsg();
 if ( array_key_exists('employeenumber', $_COOKIE)) {

@@ -273,7 +273,7 @@ $visitarray[$vak_plan] = $plan;
 $visitserialarray = serialize($visitarray);
 setcookie("visitarray", $visitserialarray, $expire1hr);
 if (strlen($date) <> 8) {
-     put_errormsg("The Date must be entered";
+     put_errormsg("The Date must be entered");
 	//setcookie("errormessage", "The Date must be entered", $expire1hr);
      redirect("visitsnew1.php"); 
 	exit();
