@@ -84,8 +84,7 @@ if (!is_numeric($editpetnum)) {
 		exit();
 	}
 	$speciesname = "";
-	for ($i = 0; $i < $row_cnt; $i++) {
-		$row = $result->fetch_row();
+	while ( $row = $result->fetch_row() ) {
 		if ($petspecies == $row[0]) {
 			$speciesname = $row[1];
 			$speciescode = $petspecies;
@@ -214,6 +213,8 @@ if ($resultpc <> FALSE)
 } else {
 	$clientpc[0] = "";
 }
+
+$mysqli->close();
 ?>
 <tr>
 	<td class="center" colspan="3"><a href="petmaintc.php" target="_blank"> Click Here </a> to get a list of Clients</td>
@@ -230,13 +231,6 @@ if (is_numeric($editpetnum)) {
 echo '</tr></table><br>';
 echo '<div class="center"><input type="submit" value="Create/Update Pet"></div></form><br>';
 echo '<div class="center"><form action="maintmenu.php"><input type="submit" value="Return to Maint Menu"></form></div><br>';
-$errormsg = get_errormsg();
-if ($errormsg <> " ")
-{
-	echo '<center><font size="+2" color="red">';
-	echo $errormsg;
-	echo '</font></center>';
-}
-delete_errormsg();
-$mysqli->close();
+
+require_once 'includes/display_errormsg.inc';
 ?>
