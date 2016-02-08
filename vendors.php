@@ -16,7 +16,7 @@ require_once "includes/header1.inc";
 <script>
 	$(document).ready(function() {
 		// validate signup form on keyup and submit
-		var validator = $("#clientform").validate({
+		var validator = $("#vendorform").validate({
 			rules: {
 				vendorname: {
 					required: true,
@@ -224,7 +224,7 @@ if ($editvendornum == "new")
 	}
 }
 ?>
-<form id="clientform" name="clientform">
+<form id="clientform" name="vendorform">
 <table cellpadding="5" cellspacing="5" width="95%">
 <tr><td align="right">Vendor Number</td><td><input type="text" name="editvendornum" size="4" maxlength="4" READONLY value="<?php echo $editvendornum;?>"></td></tr>
 <tr>
@@ -392,11 +392,7 @@ for ($i = 0; $i < $row_cnt_state; $i++) {
 <tr><td colspan="6" align="center"><input type="submit" value="Create/Update Vendor"></td></tr></table></form>
 <form action="maintmenu.php" method="post"><table width="75%"><tr><td align="center"><input type="submit" value="Return to Maintenance Menu"></td></tr></table></form>
 <?php
-$errormsg = get_errormsg();
-if ($errormsg <> " ")
-{
-	echo "<div id='errormsg'> $errormsg </div>";
-}
+include "includes/display_errormsg.inc";
 $mysqli->close();
 delete_errormsg();
 //include "helpline.php";
